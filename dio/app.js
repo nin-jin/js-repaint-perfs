@@ -1,119 +1,51 @@
 "use strict"
-
 var data = [];
-
-var DBMon = dio.createComponent({
+var VElement = dio.VElement;
+var VText = dio.VText;
+var DBMon = dio.createClass({
 	render: function() {
-		return {
-			type: 'div',
-			props: {},
-			children: [
-				{
-					type: 'table',
-					props: {className: 'table table-striped latest-data'},
-					children: [
-						{
-							type: 'tbody',
-							props: {},
-							children: data.map(function (db) {
-								var 
-								children = new Array(7);
-
-								children[0] = {
-									type: 'td',
-									props: {className: 'dbname'},
-									children:
-									[
-										{
-											type: 'text',
-											props: undefined,
-											children: [db.dbname]
-										}
-									]
-								}
-
-								children[1] = {
-									type: 'td',
-									props: {className: 'query-count'},
-									children: [
-										{
-											type: 'span',
-											props: {className: db.lastSample.countClassName},
-											children:
-											[
-												{
-													type: 'text',
-													props: undefined,
-													children: [db.lastSample.nbQueries]
-												}
-											]
-										}
-									]
-								}
-
-								var length = db.lastSample.topFiveQueries.length;
-
-								for (var i = 0; i < length; i++) {
-									var query = db.lastSample.topFiveQueries[i];
-
-									children[i+2] = {
-										type: 'td',
-										props: {key: i, className: query.elapsedClassName},
-										children: [
-											{
-												type: 'text',
-												props: undefined,
-												children: [query.formatElapsed]
-											},
-											{
-												type: 'div',
-												props: {className: 'popover left'},
-												children: [
-													{
-														type: 'div',
-														props: {className: 'popover-content'},
-														children: [
-															{
-																type: 'text',
-																props: undefined,
-																children: [query.query]
-															}
-														]
-													},
-													{
-														type: 'div',
-														props: {className: 'arrow'},
-														children: []
-													}
-												]
-											}
-										]
-									};
-								}
-
-								return {
-									type: 'tr',
-									props: {key: db.dbname},
-									children: children
-								}
-							})
-						}	
-					]
-				}
-			]
+		var length = data.length;
+		var $children = new Array(length);
+		for (var i = 0; i < length; i = i + 1) {
+			var db = data[i];
+			var children = new Array(7);
+			children[0] = VElement('td', {className: 'dbname'}, [
+				VText(db.dbname)
+			]);
+			children[1] = VElement('td', {className: 'query-count'}, [
+				VElement('span', {className: db.lastSample.countClassName}, [
+					VText(db.lastSample.nbQueries)
+				])
+			]);
+			var topFiveQueries = db.lastSample.topFiveQueries;
+			for (var j = 0, len = topFiveQueries.length; j < len; j = j + 1) {
+				var query = topFiveQueries[j];
+				children[j+2] = VElement('td', {className: query.elapsedClassName}, [
+					VText(query.formatElapsed),
+					VElement('div', {className: 'popover left'}, [
+						VElement('div', {className: 'popover-content'}, [VText(query.query)]),
+						VElement('div', {className: 'arrow'}, null)
+					])
+				])
+			}
+			$children[i] = VElement('tr', null, children);
 		}
+		return (
+			VElement('div', null, [
+				VElement('table', {className: 'table table-striped latest-data'}, [
+					VElement('tbody', null, $children)
+				])
+			])
+		);
 	}
-})
+});
 
-var render = dio.createRender(DBMon, '#app');
-
+var render = dio.render(dio.VComponent(DBMon), '#app');
 function update() {
 	data = ENV.generateData().toArray();
-	
-	Monitoring.renderRate.ping();
 	render();
-
-	setTimeout(update, ENV.timeout)
+	Monitoring.renderRate.ping();
+	setTimeout(update, ENV.timeout);
 }
 
 update();

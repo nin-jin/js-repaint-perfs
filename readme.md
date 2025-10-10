@@ -10,11 +10,14 @@ You can test it at https://mathieuancelin.github.io/js-repaint-perfs/
 
 * [Angular](https://angularjs.org/)
 * [Angular 2.0](https://angular.io/)
+* [Aurelia](http://aurelia.io/)
 * [Elem](https://github.com/mathieuancelin/Elem)
 * [elem-vdom](https://github.com/mathieuancelin/elem-vdom)
 * [Ember](http://emberjs.com/)
+* [Hyperapp](https://hyperapp.js.org)
 * [Mithril](http://mithril.js.org/)
 * [MagJS](https://github.com/magnumjs/mag.js)
+* [$mol](https://github.com/eigenmethod/mol)
 * [Ractive](http://www.ractivejs.org/)
 * [React](https://facebook.github.io/react/)
 * [React-canvas](#)
@@ -41,7 +44,6 @@ You can test it at https://mathieuancelin.github.io/js-repaint-perfs/
 * [Monkberry](http://monkberry.js.org)
 * [Simulacra](http://simulacra.js.org)
 * [DIO.js](https://thysultan.com/dio)
-
-## Todo
-
-* [Aurelia](http://aurelia.io/)
+* [RE:DOM](https://redom.js.org)
+* [StemJS](https://stemjs.org)
+* [Stencil](https://stenciljs.com)
